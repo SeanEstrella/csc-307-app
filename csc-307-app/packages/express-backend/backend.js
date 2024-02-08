@@ -62,14 +62,28 @@ const findUserById = (id) =>
 const findUserByJob = (job) =>
     users.users_list.find(user => user["job"] === job)
 
+const generateId = () => {
+    let newId = Math.floor(100000 + Math.random() * 900000);
+    let testUser = findUserById(newId);
+    while(testUser !== undefined) {
+        newId = Math.floor(100000 + Math.random() * 900000);
+        testUser = findUserById(newId);
+    }
+
+    return newId
+};
+
 const addUser = (user) => {
     const { name, job } = user;
 
     if (!name || !job) {
         return { error: 'Name or Job is missing.'}
     }
-    users["users_list"].push(user);
-    return user;
+
+    const id = generateId();
+    const newUser = { id, name, job}
+    users["users_list"].push(newUser);
+    return newUser;
 };
 
 const findUserIndexById = (id) => 
