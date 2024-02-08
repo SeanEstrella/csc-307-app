@@ -1,9 +1,11 @@
 // backend.js
 import express from "express";
+import cors from "cors";
 
 const app = express();
 const port = 8000;
 
+app.use(cors());
 app.use(express.json());
 
 const users = {
@@ -61,9 +63,15 @@ const findUserByJob = (job) =>
     users.users_list.find(user => user["job"] === job)
 
 const addUser = (user) => {
+    const { name, job } = user;
+
+    if (!name || !job) {
+        return { error: 'Name or Job is missing.'}
+    }
     users["users_list"].push(user);
     return user;
 };
+
 const findUserIndexById = (id) => 
     users.users_list.findIndex(user => user["id"] === id); 
 
@@ -71,7 +79,6 @@ const findUserIndexById = (id) =>
 app.get("/users", (req, res) => {
     const name = req.query.name;
     const job = req.query.job;
-    let modifiedUsers = users["users_list"]
 
     if (name != undefined && job != undefined) {
         let result = findUserByNameAndJob(name, job);
@@ -116,6 +123,12 @@ app.delete("/users/:id", (req, res) => {
 
 app.post("/users", (req, res) => {
     const userToAdd = req.body;
-    addUser(userToAdd);
-    res.send();
+    const result = addUser(userToAdd);
+
+    if (result.error) {
+        res.status(400).send("Bad Request.");
+    } else {
+        res.status(201).send(result)
+    }
+    
 });
