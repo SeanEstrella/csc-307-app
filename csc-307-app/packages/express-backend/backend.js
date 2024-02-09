@@ -1,5 +1,5 @@
 // backend.js
-import express from "express";
+import express, { json } from "express";
 import cors from "cors";
 
 const app = express();
@@ -70,7 +70,7 @@ const generateId = () => {
         testUser = findUserById(newId);
     }
 
-    return newId
+    return newId;
 };
 
 const addUser = (user) => {
@@ -142,7 +142,7 @@ app.post("/users", (req, res) => {
     if (result.error) {
         res.status(400).send("Bad Request.");
     } else {
-        res.status(201).send(result)
+        res.status(201).json(result);
     }
     
 });
