@@ -114,7 +114,7 @@ app.get("/users", (req, res) => {
 });
 
 app.get("/users/:id", (req, res) => {
-    const id = req.params["id"]; //or req.params.id
+    const { id } = req.params["id"]; //or req.params.id
     let result = findUserById(id);
     if (result === undefined) {
         res.status(404).send("Resource not found.");
@@ -124,7 +124,7 @@ app.get("/users/:id", (req, res) => {
 });
 
 app.delete("/users/:id", (req, res) => {
-    const id  = req.params;
+    const { id }  = req.params;
     let index = findUserIndexById(id);
     if (index !== -1) {
         users.users_list.splice(index, 1); 

@@ -7,10 +7,19 @@ function MyApp() {
   const [characters, setCharacters] = useState([]);
 
   function removeOneCharacter(index) {
-    const updated = characters.filter((character, i) => {
-      return i !== index;
+    const deleteUser = characters[index];
+    if (!deleteUser) return;
+
+    fetch(`Http://localhost:8000/users/${deleteUser.id}`, {
+      method: "DELETE",
+    }).then((res) => {
+      if (res.status === 204) {
+        const updated = characters.filter((character, i) => i !== index);
+        setCharacters(updated);
+      } else {
+        throw new Error(`Error ${res.status}`);
+      }
     });
-    setCharacters(updated);
   }
 
   function fetchUsers() {
@@ -29,11 +38,11 @@ function MyApp() {
 
   function updateList(person) {
     postUser(person)
-      .then(res => {
+      .then((res) => {
         if (res.status === 201) {
           return res.json();
         } else {
-          throw new Error("Error ${res.status}");
+          throw new Error(`Error ${res.status}`);
         }
       })
       .then(() => setCharacters([...characters, person]))
