@@ -45,7 +45,9 @@ function MyApp() {
           throw new Error(`Error ${res.status}`);
         }
       })
-      .then(() => setCharacters([...characters, person]))
+      .then((newUser) => {
+        setCharacters([...characters, newUser]);
+      })
       .catch((error) => {
         console.log(error);
       });
