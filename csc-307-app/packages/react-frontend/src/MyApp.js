@@ -14,8 +14,10 @@ function MyApp() {
       method: "DELETE",
     }).then((res) => {
       if (res.status === 204) {
-        const updated = characters.filter((character, i) => i !== index);
-        setCharacters(updated);
+        fetchUsers()
+          .then((res) => res.json())
+          .then((json) => setCharacters(json["users_list"]))
+          .catch((error) => console.log(error));
       } else {
         throw new Error(`Error ${res.status}`);
       }
