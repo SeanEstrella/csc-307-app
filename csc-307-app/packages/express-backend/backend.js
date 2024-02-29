@@ -80,7 +80,7 @@ const addUser = (user) => {
         return { error: 'Name or Job is missing.'}
     }
 
-    const id = generateId();
+    const id = generateId().toString();
     const newUser = { id, name, job}
     users["users_list"].push(newUser);
     return newUser;
